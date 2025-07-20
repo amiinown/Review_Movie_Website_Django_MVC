@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block extra_header %}
+    
+{% endblock extra_header %}
+
+{% block title %}فیلم ها{% endblock title %}
+
+{% block content %}
+<div class="container">
+
+  <form method="get" class="mb-3">
+    <label for="sort">مرتب‌سازی بر اساس:</label>
+    <select name="sort" id="sort" class="form-select" onchange="this.form.submit()">
+        <option value="release_date" {% if sort_by == 'release_date' %}selected{% endif %}>تاریخ انتشار قدیمی‌ترین</option>
+        <option value="-release_date" {% if sort_by == '-release_date' %}selected{% endif %}>تاریخ انتشار جدیدترین</option>
+        <option value="count_of_view" {% if sort_by == 'count_of_view' %}selected{% endif %}>بازدید کمترین</option>
+        <option value="-count_of_view" {% if sort_by == '-count_of_view' %}selected{% endif %}>بازدید بیشترین</option>
+        <option value="imdb_score" {% if sort_by == 'imdb_score' %}selected{% endif %}>امتیاز IMDb کمترین</option>
+        <option value="-imdb_score" {% if sort_by == '-imdb_score' %}selected{% endif %}>امتیاز IMDb بیشترین</option>
+    </select>
+  </form>
+  <div class="row g-4">
+    {% for movie in movies %}
+    {% include 'movie/inc/movie_card.html' %}
+    {% empty %}
+    فیلمی یافت نشد.
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

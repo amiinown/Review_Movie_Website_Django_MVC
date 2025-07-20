@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block extra_header %}
+    
+{% endblock extra_header %}
+
+{% block title %}صفحه اصلی{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row my-4">
+      {% include 'home/inc/slider.html' %}
+    </div>
+  
+    <div class="row my-4">
+      <h2>فیلم‌های محبوب</h2>
+      <div class="row">
+        {% for movie in popular_movies %}
+        {% include 'movie/inc/movie_card.html' %}
+        {% endfor %}
+      </div>
+    </div>
+  
+    <div class="row my-4">
+      <h2>جدیدترین فیلم‌ها</h2>
+      <div class="row">
+        {% for movie in newest_movies %}
+        {% include 'movie/inc/movie_card.html' %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock content %}

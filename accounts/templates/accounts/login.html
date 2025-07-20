@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}ورود به حساب کاربری{% endblock title %}
+
+{% block content %}
+    <form action="" method="post" >
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="ورود" class="btn btn-primary">
+    </form>
+    <br>
+    <a href="{% url 'accounts:register' %}" class="btn btn-secondary btn-sm">ساخت حساب کاربری</a>
+    <a href="{% url 'accounts:reset_password' %}" class="btn btn-warning btn-sm">فراموشی رمز عبور</a>
+{% endblock content %}

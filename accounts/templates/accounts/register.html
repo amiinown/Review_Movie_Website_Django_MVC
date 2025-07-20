@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}ساخت حساب کاربری{% endblock title %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="ثبت نام" class="btn btn-primary">
+        <a href="{% url 'accounts:login' %}" class="btn btn-secondary btn-sm">ورود</a>
+    </form>
+{% endblock content %}

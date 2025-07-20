@@ -1,0 +1,14 @@
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card h-100">
+        <div style="width: 100%; height: auto; display: flex; justify-content: center; align-items: center; background-color: #343a40;">
+          <a href="{{ movie.get_absolute_url }}"><img src="{{ movie.poster.url }}" class="card-img-top" alt="پوستر فیلم" style="max-height: 200px; max-width: 100%; object-fit: contain;"></a>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ movie.name_en }}</h5>
+          <p class="card-text">{{ movie.name_fa }}</p>
+        </div>
+        <div class="card-footer">
+          <small class="text-body-secondary">انتشار در {{ movie.formatted_release_date }}</small>
+        </div>
+      </div>
+    </div>

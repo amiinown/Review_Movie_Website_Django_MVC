@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block extra_header %}
+    
+{% endblock extra_header %}
+
+{% block title %}فیلم {{ movie.name_fa }}{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="position-relative">
+        <img src="{{ movie.background_poster.url }}" class="img-fluid w-100" alt="Background Poster" style="height: 300px; object-fit: cover; filter: brightness(0.6);">
+        
+        <div class="position-absolute top-50 start-50 translate-middle w-75 d-flex flex-column align-items-center text-center">
+            <img src="{{ movie.poster.url }}" alt="Poster" class="rounded shadow-lg" style="height: 250px; object-fit: cover;">
+            <h1 class="mt-3 text-white">{{ movie.name_en }}</h1>
+            <hr>
+            <p class="text-dark-10">{{ movie.name_fa }}</p>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">توضیحات</h3>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>نوع فیلم:</strong> {{ movie.get_movie_type_display }}</li>
+                        <li class="list-group-item"><strong>ژانر فیلم:</strong> {% for genre in movie.movie_genre.all %}
+                            {{ genre.name_fa }} |
+                        {% empty %}
+                            ژانری مشخص نشده است.
+                        {% endfor %}
+                        </li>
+                        <li class="list-group-item"><strong>تاریخ انتشار:</strong> {{ movie.formatted_release_date }}</li>
+                        <li class="list-group-item"><strong>نمره IMDb:</strong> ⭐ {{ movie.imdb_score }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">تریلر</h3>
+                    <div class="ratio ratio-16x9">
+                        <iframe src="{{ movie.trailer.url }}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container my-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h5>نقد نویسنده</h5>
+            </div>
+            <div class="card-body">
+                {% if movie.review %}
+                <h6 class="fw-bold">{{ movie.review.title }}</h6>
+                <p class="text-muted small">توسط {{ movie.review.author.username }}</p>
+                <p>{{ movie.review.content }}</p>
+                <p class="text-warning"><strong>امتیاز: </strong>{{ movie.review.score }}/100</p>
+                {% else %}
+                <p>نقدی ثبت نشده است.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div> 
+    <div class="container my-5">
+        <h3 class="text-center mb-4">بازیگران</h3>
+        <div class="row row-cols-2 row-cols-md-4 g-4">
+            {% for actor in actors %}
+            <div class="col">
+                <div class="card h-100">
+                    <div class="image-container">
+                        <a href="{{ actor.wikipedia_url }}" target="_blank"><img src="{{ actor.photo.url }}" class="card-img-top" alt="{{ actor.name_en }}"></a>
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-2">{{ actor.name_en }}</h5>
+                        <p class="card-text text-muted">{{ actor.name_fa }}</p>
+                        <hr>
+                        <p class="card-text text-center"><a href="{{ actor.get_absolute_url }}" class="text-primary text-decoration-none fw-bold link-hover">نقش آفرینی ها</a></p>    
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="container mt-4">
+        {% if request.user.is_authenticated %}
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary">ارسال</button>
+        </form>
+        {% else %}
+        <div class="alert alert-primary d-flex align-items-center" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+              <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
+            <div>
+              برای ثبت نظر ابتدا <a href="{% url 'accounts:login' %}">وارد</a> شوید.
+            </div>
+          </div>
+        {% endif %}
+    </div>
+
+    <div class="container mt-4">
+        <div class="comments">
+             {% for comment in comments %}
+            <div class="comment mb-3 p-3 border rounded">
+                <div class="d-flex align-items-center mb-2">
+                    <div class="ms-3">
+                        <strong>{{ comment.get_username }}</strong>
+                        <p class="text-muted mb-0" style="font-size: 0.9rem;">{{ comment.created|timesince }}</p>
+                    </div>
+                </div>
+                <p class="mb-2">
+                    {{ comment.content }}
+                </p>
+
+                {% if request.user.is_authenticated %}
+                <form method="post" action="{% url 'comment:add_reply' movie.id comment.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                    {{ form_reply.as_p }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">ارسال</button>
+                </form>
+                {% endif %}
+
+                {% with replies=comment.reply_comments.all %}
+                {% for reply in replies %}
+                <div class="replies ms-4 mt-3">
+                    <div class="reply mb-3 p-2 border rounded bg-light">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="ms-2">
+                                <strong>{{ reply.get_username }}</strong>
+                                <p class="text-muted mb-0" style="font-size: 0.8rem;">{{ reply.created|timesince }}</p>
+                            </div>
+                        </div>
+                        <p class="mb-0">
+                            {{ reply.content }}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endwith %}
+            </div>
+            {% empty %}
+                <div class="card-body">
+                    <i class="bi bi-chat-dots fs-1 text-muted mb-3"></i>
+                    <h5 class="card-title">نظری ثبت نشده است</h5>
+                    <p class="card-text text-muted">هیچ نظری برای این فیلم ثبت نشده است. شما می‌توانید اولین نفری باشید که نظر خود را ثبت می‌کند.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+{% endblock content %}

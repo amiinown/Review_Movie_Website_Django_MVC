@@ -1,0 +1,13 @@
+<div class="col">
+    <div class="card h-100">
+        <div class="image-container">
+            <a href="{{ actor.wikipedia_url }}"><img src="{{ actor.photo.url }}" class="card-img-top" alt="{{ actor.name_en }}"></a>
+        </div>
+        <div class="card-body text-center">
+            <h6 class="card-title mb-1">{{ actor.name_en }}</h6>
+            <p class="card-text text-muted">{{ actor.name_fa }}</p>
+            <hr>
+            <p class="card-text text-center"><a href="{{ actor.get_absolute_url }}" class="text-primary text-decoration-none fw-bold link-hover">نقش آفرینی ها</a></p>
+        </div>
+    </div>
+</div>

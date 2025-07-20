@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block extra_header %}
+    
+{% endblock extra_header %}
+
+{% block title %}{{ actor.name_fa }}{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    <h3 class="text-center mb-4">نقش آفرینی های <a href="{{ actor.wikipedia_url }}" target="_blank">{{ actor.name_fa }}</a></h3>
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-5 g-3">
+        {% for movie in actor.movie.all %}
+        {% include 'movie/inc/movie_card.html' %}
+        {% endfor %}
+    </div>
+</div>     
+{% endblock content %}

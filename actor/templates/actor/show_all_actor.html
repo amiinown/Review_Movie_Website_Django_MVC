@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block extra_header %}
+    
+{% endblock extra_header %}
+
+{% block title %}بازیگران{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    <h3 class="text-center mb-4">بازیگران فیلم</h3>
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-5 g-3">
+        {% for actor in actors %}
+        {% include 'actor/inc/actor_card.html' %}
+        {% endfor %}
+    </div>
+</div>     
+{% endblock content %}

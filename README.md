@@ -11,6 +11,7 @@ To run this Django project, follow the steps below:
    ```
    *If it is not installed, go to [python.org](https://www.python.org/) and download that version of python based on your OS.*
 2. **Create a Virtual Environment**
+   
    Create a virtual environment according to your operating system:
 
    On Linux / macOS:
@@ -24,7 +25,8 @@ To run this Django project, follow the steps below:
    python -m venv venv
    venv\Scripts\activate
    ```
-3. **Install Required package**
+4. **Install Required package**
+   
    After activating the virtual environment, install all required packages using:
    ```bash
    pip install -r requirements.txt
@@ -38,3 +40,13 @@ To run this Django project, follow the steps below:
   ```bash
   python manage.py runserver
   ```
+
+4. **Admin Account Information**
+   
+   Here is the default admin account information for your access:
+   
+   Phone number: 09021111111
+   
+   Email: admin@gmail.com
+   
+   Password: admin@gmail
